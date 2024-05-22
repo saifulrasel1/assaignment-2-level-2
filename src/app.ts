@@ -1,12 +1,16 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import router from "./app/config/modules/Products/product.route";
+import routers from "./app/config/modules/orders/order.route";
+
+
 const app = express();
 
 // parser
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/orders"  , routers)
 app.use("/api/products", router);
 
 
