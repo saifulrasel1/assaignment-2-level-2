@@ -4,10 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const product_route_1 = __importDefault(require("./app/config/modules/Products/product.route"));
 const app = (0, express_1.default)();
-const port = 3000;
-app.get('/', (req, res) => {
-    var a = 10;
-    res.send(a);
+// parser
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use("/api/products", product_route_1.default);
+app.get("/", (req, res) => {
+    res.send("hlw world");
+});
+app.all("*", (req, res) => {
+    res.status(404).json({
+        success: false,
+        message: 'your route path problem please correction it'
+    });
 });
 exports.default = app;
