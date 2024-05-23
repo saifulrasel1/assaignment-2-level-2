@@ -11,14 +11,11 @@ const getAllProductsFromDb = async () => {
 };
 
 const getSingleProductFromDb = async (id: string) => {
-  const result = await ProductModel.findOne({ id });
+  const result = await ProductModel.findOne({ id :id });
   return result;
 };
-const updateSingleProductFromDb = async (id: string) => {
-  const result = await ProductModel.findByIdAndUpdate(
-    { _id: id },
-    { $set: { "inventory.inStock": false } }
-  );
+const updateSingleProductFromDb = async (id : string, update: Tproduct) => {
+  const result = await ProductModel.findByIdAndUpdate(id, update, {  new: true});
   return result;
 };
 

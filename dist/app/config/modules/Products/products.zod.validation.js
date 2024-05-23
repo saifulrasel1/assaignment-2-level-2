@@ -12,6 +12,7 @@ const TinventorthSchema = zod_1.z.object({
     inStock: zod_1.z.boolean(),
 });
 const TproductSchema = zod_1.z.object({
+    id: zod_1.z.string(),
     name: zod_1.z.string(),
     price: zod_1.z.number(),
     category: zod_1.z.string(),

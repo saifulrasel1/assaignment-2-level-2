@@ -31,24 +31,7 @@ const createAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
 });
-const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result = yield product_service_1.productService.getAllProductsFromDb();
-        res.status(200).json({
-            success: true,
-            message: "all products",
-            data: result,
-        });
-    }
-    catch (err) {
-        res.status(500).json({
-            success: false,
-            message: "something went wrong",
-            err,
-        });
-    }
-});
-// getsingleProduct 
+// getsingleProduct
 const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productId = req.params.id;
@@ -71,7 +54,8 @@ const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, functio
 const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productId = req.params.productId;
-        const result = yield product_service_1.productService.updateSingleProductFromDb(productId);
+        const updateProduct = req.body;
+        const result = yield product_service_1.productService.updateSingleProductFromDb(productId, updateProduct);
         res.status(200).json({
             success: true,
             message: " updated products",
@@ -82,7 +66,7 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).json({
             success: false,
             message: " updatesingeproduct something went wrong",
-            error: err
+            error: err,
         });
     }
 });
@@ -100,27 +84,47 @@ const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).json({
             success: false,
             message: " updatesingeproduct something went wrong",
-            error: err
+            error: err,
         });
     }
 });
 const searchProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const searchTerm = req.query.searchTerm;
-    console.log(searchTerm);
+    const { searchTerm } = req.query;
+    if (searchTerm) {
+        try {
+            const result = yield product_service_1.productService.searchProduct(searchTerm);
+            res.status(200).json({
+                success: true,
+                message: " search product",
+                data: result,
+            });
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: " search something went wrong",
+                error: err,
+            });
+        }
+    }
+    else {
+        getAllProducts(req, res);
+    }
+});
+const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(searchTerm);
-        const result = yield product_service_1.productService.searchProduct(searchTerm);
+        const result = yield product_service_1.productService.getAllProductsFromDb();
         res.status(200).json({
             success: true,
-            message: " search product",
+            message: "all products",
             data: result,
         });
     }
     catch (err) {
         res.status(500).json({
             success: false,
-            message: " search something went wrong",
-            error: err
+            message: "something went wrong",
+            err,
         });
     }
 });
@@ -130,5 +134,5 @@ exports.productController = {
     getSingleProduct,
     updateSingleProduct,
     deleteSingleProduct,
-    searchProduct
+    searchProduct,
 };

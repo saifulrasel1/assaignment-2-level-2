@@ -12,7 +12,9 @@ const inventorySchema = new Schema<Tinventory>({
 })
 
 const productSchema = new Schema<Tproduct>({
+  id:{type:String},
   name: { type: String },
+  
   price: { type: Number },
   category: { type: String },
   tags: { type: [String] },

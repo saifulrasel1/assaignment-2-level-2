@@ -20,11 +20,11 @@ const getAllProductsFromDb = () => __awaiter(void 0, void 0, void 0, function* (
     return result;
 });
 const getSingleProductFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.ProductModel.findOne({ id });
+    const result = yield product_model_1.ProductModel.findOne({ id: id });
     return result;
 });
-const updateSingleProductFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.ProductModel.findByIdAndUpdate({ _id: id }, { $set: { "inventory.inStock": false } });
+const updateSingleProductFromDb = (id, update) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.ProductModel.findByIdAndUpdate(id, update, { new: true });
     return result;
 });
 // delete singleProduct
@@ -33,16 +33,16 @@ const deleteSingleProduct = (id) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 const searchProduct = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.ProductModel.aggregate([
-        {
-            $match: {
-                $or: [
-                    { name: { $regex: searchTerm, $options: "i" } },
-                    { tags: { $regex: searchTerm, $options: "i" } },
-                ],
-            },
-        },
-    ]);
+    let query = {};
+    if (searchTerm) {
+        query = {
+            $or: [
+                { name: { $regex: searchTerm, $options: "i" } },
+                { tags: { $regex: searchTerm, $options: "i" } },
+            ],
+        };
+    }
+    const result = yield product_model_1.ProductModel.find(query);
     return result;
 });
 exports.productService = {
